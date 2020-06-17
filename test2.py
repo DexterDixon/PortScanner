@@ -7,7 +7,7 @@ from ipaddress import *
 parser = argparse.ArgumentParser()
 parser.add_argument("target", help="Scans ports of selected target.")
 args = parser.parse_args()
-print(args.target)
+
 def GetTarget():
     option = input("Choose an option" + "\n"
                 "1: Enter Hostname" + "\n"
@@ -31,14 +31,14 @@ def Scan(target):
     print("-"* 60)
     print("Scanning target: " + target)
     print("-"* 60)
+    socket.setdefaulttimeout(.00001)
 
-
-    for i in range(1,1026):  
+    for i in range(1,1025):  
         
         sock = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
         try:   
             result = sock.connect_ex((target, i))
-    
+        
         except socket.gaierror as e:
             print("Hostname could not be resolved.\n"), e
             error.append('Hostname could not be resolved.\n')
@@ -56,5 +56,5 @@ def Scan(target):
         
         if result == 0:
                 print("Port %s is open on host %s" % (i, target))
-        sock.close()
+                sock.close()
 Scan(args.target)
